@@ -1,16 +1,14 @@
 import Video from "../model/video-model.js";
 import User from "../model/user-model.js";
 import { errorHandler } from "../utils/error.js";
-import { channel } from "diagnostics_channel";
-import { title } from "process";
 
 // **********************************
 // create Video Functionality
 // **********************************
 
 export const addVideo = async (req, res, next) => {
+  const newVideo = new Video({ userId: req.user.id, ...req.body });
   try {
-    const newVideo = new Video({ userId: req.user.id, ...req.body });
     const savedVideo = await newVideo.save();
 
     res.status(200).json(savedVideo);
