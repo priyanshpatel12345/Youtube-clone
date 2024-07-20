@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { loginFailure, loginStart, loginSuccess } from "../Redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -64,14 +67,55 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleInput = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res = await fetch("/api/auth/signIn", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        dispatch(loginSuccess(data));
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch(loginFailure(error.message));
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
         <SubTitle>to continue to LamaTube</SubTitle>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+        <Input
+          type="email"
+          placeholder="email"
+          id="email"
+          onChange={handleInput}
+        />
+        <Input
+          type="password"
+          placeholder="password"
+          id="password"
+          onChange={handleInput}
+        />
+        <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
         <Input placeholder="username" />
         <Input placeholder="email" />
