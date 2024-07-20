@@ -4,10 +4,14 @@ import styled from "styled-components";
 import { format } from "timeago.js";
 
 const Container = styled.div`
-  width: ${(props) => props.type !== "sm" && "360px"};
+  width: ${(props) => (props.type !== "sm" ? "320px" : "100%")}; /
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "45px")};
   cursor: pointer;
-  display: ${(props) => props.type === "sm" && "flex"};
+  flex: 1 1 calc(33.333% - 20px); /* 33.333% width minus gap */
+  box-sizing: border-box;
+  margin-bottom: 45px;
+  cursor: pointer;
+  display: ${(props) => (props.type === "sm" ? "flex" : "block")};
   gap: 10px;
 `;
 

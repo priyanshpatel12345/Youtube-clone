@@ -4,8 +4,13 @@ import Card from "../components/Card";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+`;
+const VideoCard = styled.div`
+  flex: 1 1 calc(33.33% - 10px);
+  box-sizing: border-box;
 `;
 
 const Home = ({ type }) => {
@@ -28,11 +33,13 @@ const Home = ({ type }) => {
       }
     };
     fetchVideo();
-  }, []);
+  }, [type]);
   return (
     <Container>
       {videos.map((video) => (
-        <Card key={video._id} video={video} />
+        <VideoCard key={video._id}>
+          <Card video={video} />
+        </VideoCard>
       ))}
 
       {error && <div> {error.message}</div>}
