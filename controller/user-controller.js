@@ -1,5 +1,6 @@
 import { errorHandler } from "../utils/error.js";
 import User from "../model/user-model.js";
+import Video from "../model/video-model.js";
 
 // ***********************************
 // Update User functionality
@@ -89,6 +90,46 @@ export const unsubscribe = async (req, res, next) => {
     });
 
     res.status(200).json("Unsubscribe Successfully!!");
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ***********************************
+//  like video functionality
+// ***********************************
+
+export const like = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      // addToSet  use  if you like video again and again ,it's contain only one time
+      $addToSet: { likes: id },
+      $pull: { dislikes: id },
+    });
+
+    res.status(200).json("The video has been liked");
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ***********************************
+//  dislike video functionality
+// ***********************************
+
+export const dislike = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      // addToSet  use  if you like video again and again ,it's contain only one time
+      $addToSet: { dislikes: id },
+      $pull: { likes: id },
+    });
+
+    res.status(200).json("The video has been disliked");
   } catch (error) {
     next(error);
   }

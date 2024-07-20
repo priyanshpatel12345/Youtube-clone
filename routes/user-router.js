@@ -2,7 +2,9 @@ import express from "express";
 import { verifyToken } from "../utils/verifyToken.js";
 import {
   deleteUser,
+  dislike,
   getUser,
+  like,
   subscribe,
   unsubscribe,
   updateUser,
@@ -19,5 +21,9 @@ router.get("/getUser/:id", getUser);
 router.put("/subscribe/:id", verifyToken, subscribe);
 
 router.put("/unsubscribe/:id", verifyToken, unsubscribe);
+
+router.put("/like/:videoId", verifyToken, like);
+
+router.put("/dislike/:videoId", verifyToken, dislike);
 
 export default router;
