@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../Redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const Container = styled.div`
   display: flex;
@@ -117,6 +118,8 @@ const SignIn = () => {
         />
         <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
+        <OAuth />
+
         <Input placeholder="username" />
         <Input placeholder="email" />
         <Input type="password" placeholder="password" />

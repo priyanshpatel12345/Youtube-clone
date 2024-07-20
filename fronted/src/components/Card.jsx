@@ -30,7 +30,8 @@ const ChannelImage = styled.img`
   height: 36px;
   border-radius: 50%;
   background-color: #999;
-  display: ${(props) => props.type === "sm" && "none"};
+  display: ${(props) => (props.type === "sm" ? "none" : "block")};
+  object-fit: cover;
 `;
 
 const Texts = styled.div``;

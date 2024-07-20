@@ -22,7 +22,7 @@ export const signUp = async (req, res, next) => {
 };
 
 // ***********************************
-// SignInLogic
+// SignIn Logic
 // ***********************************
 
 export const signIn = async (req, res, next) => {
@@ -45,7 +45,63 @@ export const signIn = async (req, res, next) => {
 
     const { password, ...rest } = user._doc;
 
-    res.cookie("access_token", token).status(200).json(rest);
+    res
+      .cookie("access_token", token, { httpOnly: true })
+      .status(200)
+      .json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ***********************************
+// Google Logic
+// ***********************************
+
+export const google = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, {
+        expiresIn: "30d",
+      });
+
+      const { password, ...rest } = user._doc;
+
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+
+      const newUser = new User({
+        ...req.body,
+        username:
+          req.body.username.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        password: hashedPassword,
+        fromGoogle: true,
+      });
+
+      const savedUser = await newUser.save();
+
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_TOKEN, {
+        expiresIn: "30d",
+      });
+
+      const { password, ...rest } = savedUser._doc;
+
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    }
   } catch (error) {
     next(error);
   }

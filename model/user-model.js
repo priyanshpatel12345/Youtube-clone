@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
     },
+    fromGoogle: {
+      type: Boolean,
+      default: false,
+    },
     subscribers: {
       type: Number,
       default: 0,
