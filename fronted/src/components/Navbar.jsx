@@ -8,6 +8,7 @@ import { Avatar as MuiAvatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Upload from "./Upload";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   position: sticky;
@@ -37,6 +38,7 @@ const Search = styled.div`
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Input = styled.input`
@@ -77,13 +79,19 @@ const StyledAvatar = styled(MuiAvatar)`
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const navigate = useNavigate();
+
   return (
     <>
       <Container>
         <Wrapper>
           <Search>
-            <Input placeholder="Search" />
-            <SearchOutlinedIcon />
+            <Input
+              placeholder="Search"
+              onChange={(e) => setQ(e.target.value)}
+            />
+            <SearchOutlinedIcon onClick={() => navigate(`/search?q=${q}`)} />
           </Search>
           {currentUser ? (
             <User>

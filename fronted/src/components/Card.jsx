@@ -65,7 +65,7 @@ const Info = styled.div`
 
 const Card = ({ type, video }) => {
   const [channel, setChannel] = useState({});
-  console.log(channel);
+  // console.log(channel);
 
   useEffect(() => {
     const fetchChannel = async () => {

@@ -23,7 +23,6 @@ const Home = ({ type }) => {
         const res = await fetch(`/api/video/${type}`);
 
         const data = await res.json();
-        console.log(data);
 
         if (res.ok) {
           setVideos(data);
