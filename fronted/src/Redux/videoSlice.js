@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentUser: null,
+  currentVideo: {
+    likes: [],
+    dislikes: [],
+  },
   loading: false,
   error: false,
 };
@@ -10,28 +13,53 @@ export const videoSlice = createSlice({
   name: "video",
   initialState,
   reducers: {
-    loginStart: (state) => {
+    fetchStart: (state) => {
       state.loading = true;
       state.error = false;
     },
-    loginSuccess: (state, action) => {
+    fetchSuccess: (state, action) => {
       state.loading = false;
-      state.currentUser = action.payload;
+      state.currentVideo = action.payload;
       state.error = false;
     },
-    loginFailure: (state, action) => {
+    fetchFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    logout: (state) => {
-      currentUser = null;
-      loading = false;
-      error = false;
+    like: (state, action) => {
+      if (
+        state.currentVideo &&
+        state.currentVideo.likes &&
+        !state.currentVideo.likes.includes(action.payload)
+      ) {
+        state.currentVideo.likes.push(action.payload);
+        state.currentVideo.dislikes.splice(
+          state.currentVideo.dislikes.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        );
+      }
+    },
+    dislike: (state, action) => {
+      if (
+        state.currentVideo &&
+        state.currentVideo.dislikes &&
+        !state.currentVideo.dislikes.includes(action.payload)
+      ) {
+        state.currentVideo.dislikes.push(action.payload);
+        state.currentVideo.likes.splice(
+          state.currentVideo.likes.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        );
+      }
     },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout } =
+export const { fetchStart, fetchSuccess, fetchFailure, like, dislike } =
   videoSlice.actions;
 
 export default videoSlice.reducer;
