@@ -44,6 +44,12 @@ const Title = styled.h1`
   font-size: 16px;
   font-weight: 500;
   color: ${({ theme }) => theme.text};
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 `;
 
 const ChannelName = styled.h2`
