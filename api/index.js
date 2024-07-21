@@ -6,6 +6,7 @@ import commentRouter from "../routes/comment-router.js";
 import videoRouter from "../routes/video-router.js";
 import authRouter from "../routes/auth-router.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ mongoose
     console.log("Error From Database", error);
   });
 
+const __dirname = path.resolve();
+
 const app = express();
 
 app.use(cookieParser());
@@ -26,6 +29,12 @@ app.use("/api/user", userRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/video", videoRouter);
 app.use("/api/auth", authRouter);
+
+app.use(express.static(path.join(__dirname, "/fronted/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "fronted", "dist", "index.html"));
+});
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
