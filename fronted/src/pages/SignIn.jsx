@@ -103,7 +103,7 @@ const SignIn = () => {
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
-        <SubTitle>to continue to LamaTube</SubTitle>
+        <SubTitle>to continue to Youtube</SubTitle>
         <Input
           type="email"
           placeholder="email"

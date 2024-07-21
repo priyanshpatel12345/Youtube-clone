@@ -18,7 +18,8 @@ import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../Redux/userSlice";
 const Container = styled.div`
   flex: 1;
   background-color: ${({ theme }) => theme.bgLighter};
@@ -75,15 +76,20 @@ const Button = styled.button`
   gap: 5px;
 `;
 
-const Title = styled.h2`
-  font-size: 14px;
-  font-weight: 500;
-  color: #aaaaaa;
-  margin-bottom: 20px;
+const SignOutButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 `;
 
 const Menu = ({ darkMode, setDarkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(logout());
+  };
   return (
     <Container>
       <Wrapper>
@@ -126,7 +132,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
           History
         </Item>
         <Hr />
-        {!currentUser && (
+        {!currentUser ? (
           <>
             <Login>
               Sign in to like videos, comment, and subscribe.
@@ -139,8 +145,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
             </Login>
             <Hr />
           </>
+        ) : (
+          <SignOutButton onClick={handleSignOut}>
+            <AccountCircleOutlinedIcon />
+            SIGN OUT
+          </SignOutButton>
         )}
-        <Title>BEST OF LAMATUBE</Title>
         <Item>
           <LibraryMusicOutlinedIcon />
           Music

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+
 import { Avatar as MuiAvatar } from "@mui/material";
 
 import { Link } from "react-router-dom";
